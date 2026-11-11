@@ -1,5 +1,6 @@
-import { useState, useEffect, useId } from "react";
+import { useState, useEffect, useId, useRef } from "react";
 import { Link } from "react-router-dom";
+import { API_BASE_URL, obtenerAPI } from "../helpers/api";
 import Breadcrumbs from "../components/Breadcrumbs";
 
 export default function Personajes() {
@@ -8,6 +9,7 @@ export default function Personajes() {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const idText = useId();
+  const inputRef = useRef(null);
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
@@ -27,21 +29,10 @@ export default function Personajes() {
           params.set("name", search.trim());
         }
 
-        const url = `https://rickandmortyapi.com/api/character/?${params}`;
-
-        const respuesta = await fetch(url, {
-          signal: controller.signal,
-        });
-
-        if (!respuesta.ok) {
-          throw new Error(
-            respuesta.status === 404
-              ? "No se encontraron personajes."
-              : `Error HTTP ${respuesta.status}`,
-          );
-        }
-
-        const datos = await respuesta.json();
+        const datos = await obtenerAPI(
+          `${API_BASE_URL}/character/?${params}`,
+          { signal: controller.signal },
+        );
 
         setPersonajes(datos.results);
         setTotalPaginas(datos.info.pages);
@@ -50,7 +41,14 @@ export default function Personajes() {
 
         setPersonajes([]);
         setTotalPaginas(1);
-        setError(err.message);
+
+        // Un 404 con término de búsqueda significa "sin resultados",
+        // no un fallo: se resuelve con el estado vacío de la lista.
+        if (err.status === 404 && search.trim()) {
+          setError(null);
+        } else {
+          setError(err.message || "No se pudieron cargar los personajes.");
+        }
       } finally {
         if (!controller.signal.aborted) {
           setLoading(false);
@@ -73,6 +71,7 @@ export default function Personajes() {
     event.preventDefault();
     setSearch("");
     setPagina(1);
+    inputRef.current?.focus();
   }
 
   if (error)
@@ -148,6 +147,7 @@ export default function Personajes() {
             {/* Input */}
             <input
               id={idText}
+              ref={inputRef}
               type="text"
               value={search}
               onChange={handleChange}
@@ -186,61 +186,78 @@ export default function Personajes() {
           </div>
         </div>
 
-        {/* Grid de Tarjetas Avanzadas */}
-        {error ? (
-          <p className="text-center text-red-400">{error}</p>
-        ) : loading ? (
-          <p className="text-center text-green-400">Buscando personajes...</p>
-        ) : personajes.length === 0 ? (
-          <p className="text-center text-slate-400">
-            No se encontraron personajes.
-          </p>
-        ) : (
-          <>
-            {personajes.length > 0 && (
-              <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-center gap-4">
-                <button
-                  type="button"
-                  onClick={() => setPagina((actual) => actual - 1)}
-                  disabled={pagina === 1}
-                  className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  ← Previous
-                </button>
+        {/* Paginación: se mantiene visible aunque la búsqueda no tenga resultados */}
+        <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={() => setPagina((actual) => actual - 1)}
+            disabled={pagina === 1 || personajes.length === 0}
+            className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ← Previous
+          </button>
 
-                <span className="text-sm font-medium text-slate-300">
-                  Page {pagina} of {totalPaginas}
-                </span>
+          <span className="text-sm font-medium text-slate-300">
+            Page {pagina} of {totalPaginas}
+          </span>
 
-                <button
-                  type="button"
-                  onClick={() => setPagina((actual) => actual + 1)}
-                  disabled={pagina === totalPaginas}
-                  className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Next →
-                </button>
-              </div>
+          <button
+            type="button"
+            onClick={() => setPagina((actual) => actual + 1)}
+            disabled={pagina === totalPaginas || personajes.length === 0}
+            className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Next →
+          </button>
+        </div>
+
+        {personajes.length === 0 ? (
+          <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-slate-800 bg-slate-950/40 p-8 text-center">
+            <p className="text-lg font-semibold text-slate-200">
+              No se encontraron personajes
+              {search.trim() && (
+                <>
+                  {" "}
+                  para{" "}
+                  <span className="text-green-400">«{search.trim()}»</span>
+                </>
+              )}
+              .
+            </p>
+
+            <p className="mt-2 text-sm text-slate-400">
+              Prueba con otro nombre o revisa la ortografía.
+            </p>
+
+            {search && (
+              <button
+                type="button"
+                onClick={handleClearInput}
+                className="mt-6 rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 transition-colors duration-300 hover:bg-green-400"
+              >
+                Limpiar búsqueda
+              </button>
             )}
-            <div className="mx-auto mt-10 max-w-7xl grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {personajes.map((p) => (
-                <Link
-                  to={`/personaje/${p.id}`}
-                  key={p.id}
-                  className="flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 hover:shadow-md transition-shadow duration-300"
-                >
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="w-full h-auto rounded-lg mb-4 transition-transform duration-300 transform hover:scale-105"
-                  />
-                  <p className="text-lg font-semibold text-slate-100 text-center hover:text-green-400 transition-colors duration-300">
-                    {p.name} — {p.species}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </>
+          </div>
+        ) : (
+          <div className="mx-auto mt-10 max-w-7xl grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {personajes.map((p) => (
+              <Link
+                to={`/personaje/${p.id}`}
+                key={p.id}
+                className="flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 hover:shadow-md transition-shadow duration-300"
+              >
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-auto rounded-lg mb-4 transition-transform duration-300 transform hover:scale-105"
+                />
+                <p className="text-lg font-semibold text-slate-100 text-center hover:text-green-400 transition-colors duration-300">
+                  {p.name} — {p.species}
+                </p>
+              </Link>
+            ))}
+          </div>
         )}
       </div>
     </>
