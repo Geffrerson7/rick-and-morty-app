@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { obtenerAPI } from "../helpers/api";
+import { API_BASE_URL, obtenerAPI } from "../helpers/api";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 
@@ -20,12 +20,12 @@ export default function Episodios() {
           page: String(pagina),
         });
         const response = await obtenerAPI(
-          `https://rickandmortyapi.com/api/episode?${params}`,
+          `${API_BASE_URL}/episode?${params}`,
         );
         setEpisodes(response.results);
         setTotalPaginas(response.info.pages);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "No se pudieron cargar los episodios.");
         setTotalPaginas(1);
       } finally {
         setLoading(false);

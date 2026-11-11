@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { obtenerAPI } from "../helpers/api";
+import { API_BASE_URL, obtenerAPI } from "../helpers/api";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -13,25 +13,44 @@ export default function EpisodioDetalle() {
 
   useEffect(() => {
     async function fetchEpisode() {
+      let episodioCargado = null;
+
       try {
         setLoading(true);
         setError(null);
         setEpisodio(null);
         setPersonajes([]);
 
-        const response = await obtenerAPI(
-          `https://rickandmortyapi.com/api/episode/${episodioId}`,
+        episodioCargado = await obtenerAPI(
+          `${API_BASE_URL}/episode/${episodioId}`,
         );
 
-        setEpisodio(response);
+        setEpisodio(episodioCargado);
+
+        const urlsPersonajes = Array.isArray(episodioCargado.characters)
+          ? episodioCargado.characters
+          : [];
 
         const personajesData = await Promise.all(
-          response.characters.map((url) => obtenerAPI(url)),
+          urlsPersonajes.map((url) => obtenerAPI(url)),
         );
 
         setPersonajes(personajesData);
       } catch (error) {
-        setError(error.message);
+        if (error.name === "AbortError") return;
+
+        if (!episodioCargado) {
+          // Un 404 se resuelve con la vista "Episodio no encontrado";
+          // cualquier otro fallo conserva el mensaje normalizado del API.
+          setError(
+            error.status === 404
+              ? null
+              : error.message || "No se pudo cargar el episodio.",
+          );
+          return;
+        }
+
+        setError(error.message || "No se pudieron cargar los personajes.");
       } finally {
         setLoading(false);
       }
