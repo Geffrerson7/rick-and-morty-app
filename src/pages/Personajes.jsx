@@ -92,21 +92,8 @@ export default function Personajes() {
       </div>
     );
 
-  // Si está cargando, mostrá esto y listo
-  if (loading)
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
-        <div className="relative flex h-16 w-16 items-center justify-center">
-          <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></div>
-          <div className="relative inline-flex rounded-full h-12 w-12 bg-green-500"></div>
-        </div>
-        <span className="ml-4 text-xl font-bold tracking-widest text-green-400 animate-pulse">
-          CARGANDO PERSONAJES...
-        </span>
-      </div>
-    );
-
-  // Si no, mostrá los personajes
+  // El buscador, los breadcrumbs y la paginación se mantienen montados
+  // durante la carga: el loader vive solo en la zona de resultados.
   return (
     <>
       <Breadcrumbs items={[{ label: "Personajes", to: "/" }]} />
@@ -191,7 +178,7 @@ export default function Personajes() {
           <button
             type="button"
             onClick={() => setPagina((actual) => actual - 1)}
-            disabled={pagina === 1 || personajes.length === 0}
+            disabled={loading || pagina === 1 || personajes.length === 0}
             className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
           >
             ← Previous
@@ -204,14 +191,29 @@ export default function Personajes() {
           <button
             type="button"
             onClick={() => setPagina((actual) => actual + 1)}
-            disabled={pagina === totalPaginas || personajes.length === 0}
+            disabled={
+              loading || pagina === totalPaginas || personajes.length === 0
+            }
             className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next →
           </button>
         </div>
 
-        {personajes.length === 0 ? (
+        {loading ? (
+          <div
+            role="status"
+            className="mt-10 flex flex-wrap items-center justify-center gap-3 py-16"
+          >
+            <div className="relative flex h-12 w-12 items-center justify-center">
+              <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></div>
+              <div className="relative inline-flex h-8 w-8 rounded-full bg-green-500"></div>
+            </div>
+            <span className="text-lg font-bold tracking-widest text-green-400 animate-pulse">
+              CARGANDO PERSONAJES...
+            </span>
+          </div>
+        ) : personajes.length === 0 ? (
           <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-slate-800 bg-slate-950/40 p-8 text-center">
             <p className="text-lg font-semibold text-slate-200">
               No se encontraron personajes
