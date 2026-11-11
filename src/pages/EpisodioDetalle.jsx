@@ -80,7 +80,7 @@ export default function EpisodioDetalle() {
           </p>
           <p className="mt-3 text-slate-400 font-medium">{error}</p>
           <Link
-            to="/episosdios"
+            to="/episodios"
             className="mt-4 inline-block text-green-400 hover:text-green-500 transition-colors duration-300"
           >
             ← Volver al listado
