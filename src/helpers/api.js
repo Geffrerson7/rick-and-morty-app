@@ -64,3 +64,38 @@ export async function obtenerAPI(url, opciones = {}) {
     });
   }
 }
+
+const ID_EN_URL = /\/(\d+)\/?$/;
+
+/**
+ * Extrae el id numérico del final de una URL de recurso de la API.
+ * Devuelve `null` si la URL no tiene un id válido.
+ */
+export function extraerIdDeUrl(url) {
+  const coincidencia = String(url).match(ID_EN_URL);
+  return coincidencia ? coincidencia[1] : null;
+}
+
+/**
+ * Obtiene varios personajes en una sola petición usando el endpoint por lotes
+ * (`/character/1,2,3`). La API responde ordenada por id, así que se reordena
+ * para respetar el orden de las URLs recibidas.
+ */
+export async function obtenerPersonajesPorLote(urls, opciones = {}) {
+  const ids = urls.map(extraerIdDeUrl).filter(Boolean);
+
+  if (ids.length === 0) return [];
+
+  const datos = await obtenerAPI(
+    `${API_BASE_URL}/character/${ids.join(",")}`,
+    opciones,
+  );
+
+  // Un único id devuelve un objeto; varios devuelven un array.
+  const personajes = Array.isArray(datos) ? datos : [datos];
+  const porId = new Map(
+    personajes.map((personaje) => [String(personaje.id), personaje]),
+  );
+
+  return ids.map((id) => porId.get(id)).filter(Boolean);
+}

@@ -1,5 +1,9 @@
 import { useParams } from "react-router-dom";
-import { API_BASE_URL, obtenerAPI } from "../helpers/api";
+import {
+  API_BASE_URL,
+  obtenerAPI,
+  obtenerPersonajesPorLote,
+} from "../helpers/api";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -34,11 +38,9 @@ export default function EpisodioDetalle() {
           ? episodioCargado.characters
           : [];
 
-        const personajesData = await Promise.all(
-          urlsPersonajes.map((url) =>
-            obtenerAPI(url, { signal: controller.signal }),
-          ),
-        );
+        const personajesData = await obtenerPersonajesPorLote(urlsPersonajes, {
+          signal: controller.signal,
+        });
 
         setPersonajes(personajesData);
       } catch (error) {
