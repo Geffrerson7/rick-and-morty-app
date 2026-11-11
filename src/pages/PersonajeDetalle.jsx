@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { obtenerAPI } from "../helpers/api";
+import { API_BASE_URL, obtenerAPI } from "../helpers/api";
 import Breadcrumbs from "../components/Breadcrumbs";
 
 export default function PersonajeDetalle() {
@@ -16,12 +16,15 @@ export default function PersonajeDetalle() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function cargar() {
       try {
         setLoading(true);
         setError(null);
         const respuesta = await fetch(
-          `https://rickandmortyapi.com/api/character/${idPersonaje}`,
+          `${API_BASE_URL}/character/${idPersonaje}`,
+          { signal: controller.signal },
         );
         if (!respuesta.ok) {
           throw new Error("Personaje no encontrado");
@@ -29,32 +32,45 @@ export default function PersonajeDetalle() {
         const datos = await respuesta.json();
         setPersonaje(datos);
       } catch (err) {
+        if (err.name === "AbortError") return;
+
         setError(err.message);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
     cargar();
+
+    return () => controller.abort();
   }, [idPersonaje]);
 
   useEffect(() => {
     if (!episodioId) return;
 
+    const controller = new AbortController();
+
     async function fetchEpisode() {
       try {
         const response = await obtenerAPI(
-          `https://rickandmortyapi.com/api/episode/${episodioId}`,
+          `${API_BASE_URL}/episode/${episodioId}`,
+          { signal: controller.signal },
         );
 
         setEpisodio(response);
       } catch (error) {
+        if (error.name === "AbortError") return;
+
         console.error("Error al cargar el episodio:", error);
         setEpisodio(null);
       }
     }
 
     fetchEpisode();
+
+    return () => controller.abort();
   }, [episodioId]);
 
   if (loading)

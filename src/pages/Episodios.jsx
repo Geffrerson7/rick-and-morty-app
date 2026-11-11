@@ -11,6 +11,8 @@ export default function Episodios() {
   const [totalPaginas, setTotalPaginas] = useState(1);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchEpisodes = async () => {
       setLoading(true);
       setError(null);
@@ -21,18 +23,25 @@ export default function Episodios() {
         });
         const response = await obtenerAPI(
           `${API_BASE_URL}/episode?${params}`,
+          { signal: controller.signal },
         );
         setEpisodes(response.results);
         setTotalPaginas(response.info.pages);
       } catch (err) {
+        if (err.name === "AbortError") return;
+
         setError(err.message || "No se pudieron cargar los episodios.");
         setTotalPaginas(1);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchEpisodes();
+
+    return () => controller.abort();
   }, [pagina]);
 
   if (error) {

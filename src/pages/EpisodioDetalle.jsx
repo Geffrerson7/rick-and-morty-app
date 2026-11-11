@@ -12,6 +12,8 @@ export default function EpisodioDetalle() {
   const [personajes, setPersonajes] = useState([]);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function fetchEpisode() {
       let episodioCargado = null;
 
@@ -23,6 +25,7 @@ export default function EpisodioDetalle() {
 
         episodioCargado = await obtenerAPI(
           `${API_BASE_URL}/episode/${episodioId}`,
+          { signal: controller.signal },
         );
 
         setEpisodio(episodioCargado);
@@ -32,7 +35,9 @@ export default function EpisodioDetalle() {
           : [];
 
         const personajesData = await Promise.all(
-          urlsPersonajes.map((url) => obtenerAPI(url)),
+          urlsPersonajes.map((url) =>
+            obtenerAPI(url, { signal: controller.signal }),
+          ),
         );
 
         setPersonajes(personajesData);
@@ -52,11 +57,15 @@ export default function EpisodioDetalle() {
 
         setError(error.message || "No se pudieron cargar los personajes.");
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
     fetchEpisode();
+
+    return () => controller.abort();
   }, [episodioId]);
 
   if (loading)
