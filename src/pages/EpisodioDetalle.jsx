@@ -1,153 +1,59 @@
-import { useParams } from "react-router-dom";
-import {
-  API_BASE_URL,
-  obtenerAPI,
-  obtenerPersonajesPorLote,
-} from "../helpers/api";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { CharacterRow } from "../components/CharacterCard";
+import ErrorState from "../components/ErrorState";
+import PageLoader from "../components/PageLoader";
+import { useEpisode } from "../hooks/useEpisode";
 
 export default function EpisodioDetalle() {
   const { episodioId } = useParams();
-  const [episodio, setEpisodio] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [personajes, setPersonajes] = useState([]);
+  const { episode, characters, loading, error, notFound } =
+    useEpisode(episodioId);
 
-  useEffect(() => {
-    const controller = new AbortController();
+  const volverAction = (
+    <Link
+      to="/episodios"
+      className="mt-4 inline-block text-green-400 hover:text-green-500 transition-colors duration-300"
+    >
+      ← Volver al listado
+    </Link>
+  );
 
-    async function fetchEpisode() {
-      let episodioCargado = null;
+  if (loading) return <PageLoader message="CARGANDO EPISODIO..." />;
 
-      try {
-        setLoading(true);
-        setError(null);
-        setEpisodio(null);
-        setPersonajes([]);
+  if (error) return <ErrorState message={error} action={volverAction} />;
 
-        episodioCargado = await obtenerAPI(
-          `${API_BASE_URL}/episode/${episodioId}`,
-          { signal: controller.signal },
-        );
-
-        setEpisodio(episodioCargado);
-
-        const urlsPersonajes = Array.isArray(episodioCargado.characters)
-          ? episodioCargado.characters
-          : [];
-
-        const personajesData = await obtenerPersonajesPorLote(urlsPersonajes, {
-          signal: controller.signal,
-        });
-
-        setPersonajes(personajesData);
-      } catch (error) {
-        if (error.name === "AbortError") return;
-
-        if (!episodioCargado) {
-          // Un 404 se resuelve con la vista "Episodio no encontrado";
-          // cualquier otro fallo conserva el mensaje normalizado del API.
-          setError(
-            error.status === 404
-              ? null
-              : error.message || "No se pudo cargar el episodio.",
-          );
-          return;
-        }
-
-        setError(error.message || "No se pudieron cargar los personajes.");
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchEpisode();
-
-    return () => controller.abort();
-  }, [episodioId]);
-
-  if (loading)
+  if (notFound || !episode) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
-        <div className="relative flex h-16 w-16 items-center justify-center">
-          <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></div>
-          <div className="relative inline-flex rounded-full h-12 w-12 bg-green-500"></div>
-        </div>
-        <span className="ml-4 text-xl font-bold tracking-widest text-green-400 animate-pulse">
-          CARGANDO EPISODIO...
-        </span>
-      </div>
+      <ErrorState message="Episodio no encontrado" action={volverAction} />
     );
-  if (error)
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
-        <div className="max-w-md rounded-2xl bg-red-950/20 p-8 text-center border border-red-500/40 backdrop-blur-sm">
-          <p className="text-2xl font-black text-red-500 tracking-wide">
-            💥 ¡WUBBA LUBBA DUB DUB!
-          </p>
-          <p className="mt-3 text-slate-400 font-medium">{error}</p>
-          <Link
-            to="/episodios"
-            className="mt-4 inline-block text-green-400 hover:text-green-500 transition-colors duration-300"
-          >
-            ← Volver al listado
-          </Link>
-        </div>
-      </div>
-    );
-
-  if (!episodio)
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
-        <div className="max-w-md rounded-2xl bg-red-950/20 p-8 text-center border border-red-500/40 backdrop-blur-sm">
-          <p className="text-2xl font-black text-red-500 tracking-wide">
-            💥 ¡WUBBA LUBBA DUB DUB!
-          </p>
-          <p className="mt-3 text-slate-400 font-medium">
-            Episodio no encontrado
-          </p>
-          <Link
-            to="/episodios"
-            className="mt-4 inline-block text-green-400 hover:text-green-500 transition-colors duration-300"
-          >
-            ← Volver al listado
-          </Link>
-        </div>
-      </div>
-    );
+  }
 
   return (
     <>
       <Breadcrumbs
         items={[
           { label: "Episodios", to: "/episodios" },
-          {
-            label: episodio.name,
-            to: `/episodios/${episodio.id}`,
-          },
+          { label: episode.name, to: `/episodios/${episode.id}` },
         ]}
       />
       <div className="min-h-screen bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
         {/* Información del episodio */}
         <div className="mx-auto mb-12 max-w-7xl text-center">
           <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-4xl font-black text-transparent sm:text-5xl p-3">
-            {episodio.name}
+            {episode.name}
           </h1>
 
           <p className="mt-4 text-lg font-bold text-green-400">
-            {episodio.episode}
+            {episode.episode}
           </p>
 
           <p className="mt-2 text-slate-400">
-            Fecha de emisión: {episodio.air_date}
+            Fecha de emisión: {episode.air_date}
           </p>
 
           <p className="mt-2 text-sm text-slate-500">
-            Personajes: {personajes.length}
+            Personajes: {characters.length}
           </p>
         </div>
 
@@ -158,36 +64,12 @@ export default function EpisodioDetalle() {
           </h2>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {personajes.map((personaje) => (
-              <Link
-                key={personaje.id}
-                to={`/episodios/${episodio.id}/personaje/${personaje.id}`}
-                className="flex items-center gap-4 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-all duration-300 hover:border-green-500 hover:bg-slate-900"
-              >
-                <img
-                  src={personaje.image}
-                  alt={personaje.name}
-                  className="h-24 w-24 shrink-0 rounded-lg object-cover"
-                />
-
-                <div className="min-w-0">
-                  <h3 className="truncate text-lg font-bold text-green-400">
-                    {personaje.name}
-                  </h3>
-
-                  <p className="mt-1 text-sm text-slate-400">
-                    Especie: {personaje.species}
-                  </p>
-
-                  <p className="mt-1 text-sm text-slate-400">
-                    Estado: {personaje.status}
-                  </p>
-
-                  <span className="mt-3 inline-block text-xs font-bold text-slate-300">
-                    Ver expediente →
-                  </span>
-                </div>
-              </Link>
+            {characters.map((character) => (
+              <CharacterRow
+                key={character.id}
+                character={character}
+                episodeId={episode.id}
+              />
             ))}
           </div>
         </div>
