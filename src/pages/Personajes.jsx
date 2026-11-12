@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import CharacterSearch from "../components/CharacterSearch";
 import { CharacterCard } from "../components/CharacterCard";
@@ -11,10 +11,12 @@ export default function Personajes() {
   const [search, setSearch] = useState("");
   const [pagina, setPagina] = useState(1);
   const inputRef = useRef(null);
+  const volverAPrimeraPagina = useCallback(() => setPagina(1), []);
 
-  const { characters, loading, error, totalPages } = useCharacters({
+  const { characters, loading, error, totalPages, retry } = useCharacters({
     page: pagina,
     search,
+    onPageOutOfRange: volverAPrimeraPagina,
   });
 
   function handleChange(event) {
@@ -30,19 +32,7 @@ export default function Personajes() {
   }
 
   if (error) {
-    return (
-      <ErrorState
-        message={error}
-        action={
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-6 inline-block rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 hover:bg-green-400 transition-colors duration-300"
-          >
-            ↻ Reintentar
-          </button>
-        }
-      />
-    );
+    return <ErrorState message={error} onRetry={retry} />;
   }
 
   // El buscador, los breadcrumbs y la paginación se mantienen montados

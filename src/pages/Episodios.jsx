@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import EpisodeCard from "../components/EpisodeCard";
 import ErrorState from "../components/ErrorState";
@@ -8,10 +8,14 @@ import { useEpisodes } from "../hooks/useEpisodes";
 
 export default function Episodios() {
   const [pagina, setPagina] = useState(1);
-  const { episodes, loading, error, totalPages } = useEpisodes(pagina);
+  const volverAPrimeraPagina = useCallback(() => setPagina(1), []);
+
+  const { episodes, loading, error, totalPages, retry } = useEpisodes(pagina, {
+    onPageOutOfRange: volverAPrimeraPagina,
+  });
 
   if (error) {
-    return <ErrorState message={error} />;
+    return <ErrorState message={error} onRetry={retry} />;
   }
 
   return (

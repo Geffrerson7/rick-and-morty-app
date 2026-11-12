@@ -3,6 +3,7 @@ import {
   API_BASE_URL,
   obtenerAPI,
   obtenerPersonajesPorLote,
+  validarId,
 } from "../helpers/api";
 
 /**
@@ -32,8 +33,10 @@ export function useEpisode(episodeId) {
         setEpisode(null);
         setCharacters([]);
 
+        const idValido = validarId(episodeId);
+
         episodioCargado = await obtenerAPI(
-          `${API_BASE_URL}/episode/${episodeId}`,
+          `${API_BASE_URL}/episode/${idValido}`,
           { signal: controller.signal },
         );
 
@@ -91,8 +94,10 @@ export function useEpisodeSummary(episodeId) {
 
     async function cargar() {
       try {
+        const idValido = validarId(episodeId);
+
         const datos = await obtenerAPI(
-          `${API_BASE_URL}/episode/${episodeId}`,
+          `${API_BASE_URL}/episode/${idValido}`,
           { signal: controller.signal },
         );
 
@@ -100,7 +105,10 @@ export function useEpisodeSummary(episodeId) {
       } catch (err) {
         if (err.name === "AbortError") return;
 
-        console.error("Error al cargar el episodio:", err);
+        // Un id inexistente o no numérico solo deja el breadcrumb sin nombre.
+        if (err.status !== 404) {
+          console.error("Error al cargar el episodio:", err);
+        }
         setEpisode(null);
       }
     }

@@ -1,15 +1,25 @@
 export const API_BASE_URL = "https://rickandmortyapi.com/api";
 
+/** Tiempo máximo por intento antes de abortar la petición. */
+export const API_TIMEOUT_MS = 9000;
+
+/** Un intento original + un reintento para fallos de red. */
+const MAX_INTENTOS = 2;
+
 /**
  * Error normalizado de la API.
  * Permite distinguir el tipo de fallo sin exponer mensajes técnicos al usuario.
  */
 export class ApiError extends Error {
-  constructor(message, { status = 0, url = "", cause } = {}) {
+  constructor(
+    message,
+    { status = 0, url = "", cause, reintentable = false } = {},
+  ) {
     super(message, cause ? { cause } : undefined);
     this.name = "ApiError";
     this.status = status;
     this.url = url;
+    this.reintentable = reintentable;
   }
 }
 
@@ -28,23 +38,65 @@ function mensajePorEstado(status) {
   }
 }
 
+const ID_NUMERICO = /^\d+$/;
+
 /**
- * Realiza una petición a la API y devuelve el JSON ya validado.
- * Lanza {@link ApiError} si la respuesta no es correcta y propaga los
- * `AbortError` para que quien cancele la petición pueda ignorarlos.
+ * Valida un id de ruta antes de construir la URL. Un id no numérico no puede
+ * existir en la API, así que se rechaza en local con un 404: los consumidores
+ * ya saben traducirlo a "no encontrado" y nunca se llega a hacer la petición.
  */
-export async function obtenerAPI(url, opciones = {}) {
+export function validarId(valor) {
+  const id = String(valor ?? "").trim();
+
+  if (!ID_NUMERICO.test(id)) {
+    throw new ApiError("El identificador solicitado no es válido.", {
+      status: 404,
+    });
+  }
+
+  return id;
+}
+
+/**
+ * Un único intento: aplica el timeout, combina la señal del llamador y
+ * normaliza los fallos (red, timeout, HTTP y JSON inválido).
+ */
+async function peticionUnica(url, opciones = {}) {
+  const { signal, timeoutMs = API_TIMEOUT_MS, ...resto } = opciones;
+
+  const control = new AbortController();
+  const temporizador = setTimeout(() => {
+    control.abort(
+      new DOMException("La petición superó el tiempo máximo.", "TimeoutError"),
+    );
+  }, timeoutMs);
+
+  const senal = signal
+    ? AbortSignal.any([signal, control.signal])
+    : control.signal;
+
   let respuesta;
 
   try {
-    respuesta = await fetch(url, opciones);
+    respuesta = await fetch(url, { ...resto, signal: senal });
   } catch (error) {
-    if (error.name === "AbortError") throw error;
+    if (signal?.aborted) {
+      throw new DOMException("Petición cancelada.", "AbortError");
+    }
+
+    if (control.signal.aborted) {
+      throw new ApiError(
+        "La API tardó demasiado en responder. Inténtalo de nuevo.",
+        { url, cause: error },
+      );
+    }
 
     throw new ApiError(
       "No se pudo conectar con la API. Revisa tu conexión e inténtalo de nuevo.",
-      { url, cause: error },
+      { url, cause: error, reintentable: true },
     );
+  } finally {
+    clearTimeout(temporizador);
   }
 
   if (!respuesta.ok) {
@@ -63,6 +115,37 @@ export async function obtenerAPI(url, opciones = {}) {
       cause: error,
     });
   }
+}
+
+/**
+ * Realiza una petición a la API y devuelve el JSON ya validado.
+ *
+ * - Aborta a los {@link API_TIMEOUT_MS} con un mensaje en español.
+ * - Reintenta una vez los fallos de red (no los HTTP ni los timeouts).
+ * - Lanza {@link ApiError} y propaga los `AbortError` para que quien cancele
+ *   la petición pueda ignorarlos.
+ */
+export async function obtenerAPI(url, opciones = {}) {
+  let ultimoError;
+
+  for (let intento = 1; intento <= MAX_INTENTOS; intento += 1) {
+    try {
+      return await peticionUnica(url, opciones);
+    } catch (error) {
+      if (error.name === "AbortError") throw error;
+
+      ultimoError = error;
+
+      const puedeReintentar =
+        error.reintentable === true &&
+        intento < MAX_INTENTOS &&
+        !opciones.signal?.aborted;
+
+      if (!puedeReintentar) throw error;
+    }
+  }
+
+  throw ultimoError;
 }
 
 const ID_EN_URL = /\/(\d+)\/?$/;
