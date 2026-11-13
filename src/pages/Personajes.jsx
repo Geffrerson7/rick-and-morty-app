@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useRef } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import CharacterSearch from "../components/CharacterSearch";
 import { CharacterCard } from "../components/CharacterCard";
@@ -7,29 +7,27 @@ import PageLoader from "../components/PageLoader";
 import Pagination from "../components/Pagination";
 import { useCharacters } from "../hooks/useCharacters";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { useListParams } from "../hooks/useListParams";
 
 export default function Personajes() {
   useDocumentTitle("Personajes");
-  const [search, setSearch] = useState("");
-  const [pagina, setPagina] = useState(1);
+  const { pagina, busqueda, setPagina, buscar, reajustarPagina } =
+    useListParams();
   const inputRef = useRef(null);
-  const volverAPrimeraPagina = useCallback(() => setPagina(1), []);
 
   const { characters, loading, error, totalPages, retry } = useCharacters({
     page: pagina,
-    search,
-    onPageOutOfRange: volverAPrimeraPagina,
+    search: busqueda,
+    onPageOutOfRange: reajustarPagina,
   });
 
   function handleChange(event) {
-    setSearch(event.target.value);
-    setPagina(1);
+    buscar(event.target.value);
   }
 
   function handleClearInput(event) {
     event.preventDefault();
-    setSearch("");
-    setPagina(1);
+    buscar("");
     inputRef.current?.focus();
   }
 
@@ -54,7 +52,7 @@ export default function Personajes() {
         </div>
 
         <CharacterSearch
-          value={search}
+          value={busqueda}
           onChange={handleChange}
           onClear={handleClearInput}
           inputRef={inputRef}
@@ -75,11 +73,11 @@ export default function Personajes() {
           <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-slate-800 bg-slate-950/40 p-8 text-center">
             <p className="text-lg font-semibold text-slate-200">
               No se encontraron personajes
-              {search.trim() && (
+              {busqueda.trim() && (
                 <>
                   {" "}
                   para{" "}
-                  <span className="text-green-400">«{search.trim()}»</span>
+                  <span className="text-green-400">«{busqueda.trim()}»</span>
                 </>
               )}
               .
@@ -89,7 +87,7 @@ export default function Personajes() {
               Prueba con otro nombre o revisa la ortografía.
             </p>
 
-            {search && (
+            {busqueda && (
               <button
                 type="button"
                 onClick={handleClearInput}

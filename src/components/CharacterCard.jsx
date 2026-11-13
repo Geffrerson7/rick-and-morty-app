@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 /**
  * Tarjeta de personaje del listado principal.
+ * El enlace guarda la URL del listado (página y búsqueda incluidas) para que la
+ * ficha pueda ofrecer una vuelta exacta al punto de partida.
  */
 export function CharacterCard({ character }) {
+  const { pathname, search } = useLocation();
+
   return (
     <Link
       to={`/personaje/${character.id}`}
+      state={{ desde: `${pathname}${search}` }}
       className="group flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 hover:shadow-md transition-shadow duration-300"
     >
       <img
