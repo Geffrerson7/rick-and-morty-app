@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import ErrorState from "../components/ErrorState";
 import PageLoader from "../components/PageLoader";
@@ -8,8 +8,13 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function PersonajeDetalle() {
   const { id, episodioId, personajeId } = useParams();
+  const { state } = useLocation();
   const idPersonaje = personajeId ?? id;
-  const volverA = episodioId ? `/episodios/${episodioId}` : "/";
+  // La tarjeta del listado deja su URL en `state` para volver a la misma
+  // página y búsqueda; si se entra por enlace directo se usa el contexto de
+  // la ruta (episodio o listado).
+  const desdeLista = typeof state?.desde === "string" ? state.desde : null;
+  const volverA = desdeLista ?? (episodioId ? `/episodios/${episodioId}` : "/");
   const volverTexto = episodioId
     ? "Volver al episodio"
     : "Volver al listado de personajes";

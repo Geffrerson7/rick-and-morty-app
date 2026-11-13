@@ -8,14 +8,16 @@ export default function Layout() {
   const mainRef = useRef(null);
   const primeraRuta = useRef(true);
 
-  // Al cambiar de ruta el foco se mueve al contenido principal para que los
-  // lectores de pantalla no se queden en el enlace pulsado.
+  // Al cambiar de ruta se vuelve al principio de la página y el foco pasa al
+  // contenido principal, para no entrar al detalle a mitad del scroll ni dejar
+  // a los lectores de pantalla en el enlace pulsado.
   useEffect(() => {
     if (primeraRuta.current) {
       primeraRuta.current = false;
       return;
     }
 
+    window.scrollTo(0, 0);
     mainRef.current?.focus({ preventScroll: true });
   }, [pathname]);
 
