@@ -34,7 +34,7 @@ describe("EpisodioDetalle", () => {
     await user.click(screen.getByRole("link", { name: /rick sanchez/i }));
 
     expect(
-      await screen.findByRole("heading", { level: 1, name: "Rick Sanchez" }),
+      await screen.findByRole("heading", { level: 2, name: "Rick Sanchez" }),
     ).toBeInTheDocument();
 
     const breadcrumb = screen.getByRole("navigation", { name: "breadcrumb" });

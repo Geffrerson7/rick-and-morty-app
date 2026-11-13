@@ -2,6 +2,7 @@
  * Estado de error compartido.
  * `onRetry` muestra el botón estándar de reintento; `action` permite añadir
  * cualquier otro control (volver al listado, etc.).
+ * `role="alert"` anuncia el error a los lectores de pantalla.
  */
 export default function ErrorState({
   title = "💥 ¡WUBBA LUBBA DUB DUB!",
@@ -10,11 +11,14 @@ export default function ErrorState({
   onRetry,
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
+    <div
+      role="alert"
+      className="flex min-h-[60vh] items-center justify-center px-4 py-20"
+    >
       <div className="max-w-md rounded-2xl bg-red-950/20 p-8 text-center border border-red-500/40 backdrop-blur-sm">
-        <p className="text-2xl font-black text-red-500 tracking-wide">
+        <h1 className="text-2xl font-black text-red-500 tracking-wide">
           {title}
-        </p>
+        </h1>
         <p className="mt-3 text-slate-400 font-medium">{message}</p>
         {onRetry && (
           <button

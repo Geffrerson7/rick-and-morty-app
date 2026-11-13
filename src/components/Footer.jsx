@@ -6,7 +6,7 @@ export default function Footer() {
           © {new Date().getFullYear()} Gefferson Casasola
         </p>
 
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-slate-400">
           Proyecto desarrollado con React y Tailwind CSS
         </p>
 

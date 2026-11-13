@@ -18,4 +18,11 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // Los tests se ejecutan en Node (Vitest), donde existen `process`, etc.
+    files: ['src/test/**/*.{js,jsx}', 'src/**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+  },
 ])

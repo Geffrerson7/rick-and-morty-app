@@ -14,15 +14,15 @@ export default function EpisodeCard({ episode }) {
             {episode.episode}
           </span>
           {/* ID de Registro */}
-          <span className="text-xs font-mono text-slate-600">
+          <span className="text-xs font-mono text-slate-400">
             #REG-{String(episode.id).padStart(3, "0")}
           </span>
         </div>
 
         {/* Título del episodio */}
-        <h3 className="mt-5 text-2xl font-extrabold text-white tracking-tight leading-snug group-hover:text-lime-400 transition-colors duration-300 line-clamp-2">
+        <h2 className="mt-5 text-2xl font-extrabold text-white tracking-tight leading-snug group-hover:text-lime-400 transition-colors duration-300 line-clamp-2">
           {episode.name}
-        </h3>
+        </h2>
       </div>
 
       {/* Bloque de Información Técnica e Indicadores */}
@@ -30,7 +30,7 @@ export default function EpisodeCard({ episode }) {
         <div className="grid grid-cols-2 gap-4 rounded-xl bg-slate-950/60 p-4 border border-slate-800/40">
           {/* Métrica 1: Fecha de estreno */}
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Transmisión
             </span>
             <span className="mt-1 text-xs font-semibold text-slate-300 truncate">
@@ -40,7 +40,7 @@ export default function EpisodeCard({ episode }) {
 
           {/* Métrica 2: Cantidad de personajes (.length) */}
           <div className="flex flex-col border-l border-slate-800/80 pl-4">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Personajes
             </span>
             <span className="mt-1 flex items-center text-sm font-black text-lime-400">

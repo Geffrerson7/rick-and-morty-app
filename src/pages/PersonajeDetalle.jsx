@@ -4,6 +4,7 @@ import ErrorState from "../components/ErrorState";
 import PageLoader from "../components/PageLoader";
 import { useCharacter } from "../hooks/useCharacters";
 import { useEpisodeSummary } from "../hooks/useEpisode";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function PersonajeDetalle() {
   const { id, episodioId, personajeId } = useParams();
@@ -15,6 +16,7 @@ export default function PersonajeDetalle() {
 
   const { character, loading, error } = useCharacter(idPersonaje);
   const episode = useEpisodeSummary(episodioId);
+  useDocumentTitle(character?.name ?? "Personaje");
 
   const volverAction = (
     <Link
@@ -80,9 +82,9 @@ export default function PersonajeDetalle() {
 
           {/* Datos del personaje */}
           <div className="flex flex-1 flex-col justify-center p-6 sm:p-7">
-            <h1 className="text-2xl font-bold text-green-400">
+            <h2 className="text-2xl font-bold text-green-400">
               {character.name}
-            </h1>
+            </h2>
 
             <div className="mt-4 space-y-3 text-slate-400">
               <p>
