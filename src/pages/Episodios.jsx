@@ -5,8 +5,10 @@ import ErrorState from "../components/ErrorState";
 import PageLoader from "../components/PageLoader";
 import Pagination from "../components/Pagination";
 import { useEpisodes } from "../hooks/useEpisodes";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function Episodios() {
+  useDocumentTitle("Episodios");
   const [pagina, setPagina] = useState(1);
   const volverAPrimeraPagina = useCallback(() => setPagina(1), []);
 
@@ -38,6 +40,7 @@ export default function Episodios() {
           totalPages={totalPages}
           onChange={setPagina}
           disabled={loading}
+          contexto="episodios"
         />
 
         {loading ? (

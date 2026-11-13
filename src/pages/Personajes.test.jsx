@@ -13,7 +13,7 @@ describe("Personajes", () => {
     renderApp("/");
 
     expect(
-      await screen.findByText("Rick Sanchez — Human"),
+      await screen.findByRole("heading", { name: "Rick Sanchez" }),
     ).toBeInTheDocument();
 
     await user.type(
@@ -35,7 +35,7 @@ describe("Personajes", () => {
     expect(
       screen.getByLabelText("Buscar personajes por nombre"),
     ).toHaveValue("zzzzzz");
-    expect(screen.getByText("Page 1 of 1")).toBeInTheDocument();
+    expect(screen.getByText("Página 1 de 1")).toBeInTheDocument();
   });
 
   it("mantiene los controles montados mientras carga la página siguiente", async () => {
@@ -61,22 +61,24 @@ describe("Personajes", () => {
     );
 
     renderApp("/");
-    expect(await screen.findByText("Morty Smith — Human")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Morty Smith" }),
+    ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /next/i }));
+    await user.click(screen.getByRole("button", { name: /siguiente/i }));
 
     // Durante la carga, la página 2 ya está activa y los controles siguen ahí.
     expect(await screen.findByText("CARGANDO PERSONAJES...")).toBeInTheDocument();
-    expect(screen.getByText("Page 2 of 3")).toBeInTheDocument();
+    expect(screen.getByText("Página 2 de 3")).toBeInTheDocument();
     expect(
       screen.getByLabelText("Buscar personajes por nombre"),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /siguiente/i })).toBeDisabled();
 
     expect(
-      await screen.findByText("Summer Smith — Human"),
+      await screen.findByRole("heading", { name: "Summer Smith" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /siguiente/i })).toBeEnabled();
   });
 
   it("vuelve a la página 1 cuando la API responde 404 a una página fuera de rango", async () => {
@@ -101,14 +103,18 @@ describe("Personajes", () => {
     );
 
     renderApp("/");
-    expect(await screen.findByText("Morty Smith — Human")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Morty Smith" }),
+    ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /next/i }));
+    await user.click(screen.getByRole("button", { name: /siguiente/i }));
 
     expect(
-      await screen.findByText("Page 1 of 2", {}, { timeout: 3000 }),
+      await screen.findByText("Página 1 de 2", {}, { timeout: 3000 }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Morty Smith — Human")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Morty Smith" }),
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /reintentar/i }),
     ).not.toBeInTheDocument();

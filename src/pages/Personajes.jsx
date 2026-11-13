@@ -6,8 +6,10 @@ import ErrorState from "../components/ErrorState";
 import PageLoader from "../components/PageLoader";
 import Pagination from "../components/Pagination";
 import { useCharacters } from "../hooks/useCharacters";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function Personajes() {
+  useDocumentTitle("Personajes");
   const [search, setSearch] = useState("");
   const [pagina, setPagina] = useState(1);
   const inputRef = useRef(null);
@@ -64,6 +66,7 @@ export default function Personajes() {
           totalPages={totalPages}
           onChange={setPagina}
           disabled={loading || characters.length === 0}
+          contexto="personajes"
         />
 
         {loading ? (

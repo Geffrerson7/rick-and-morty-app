@@ -33,16 +33,18 @@ export default function CharacterSearch({
         </svg>
 
         {/* Input */}
+        <label htmlFor={idText} className="sr-only">
+          Buscar personajes por nombre
+        </label>
         <input
           id={idText}
           ref={inputRef}
-          type="text"
+          type="search"
           value={value}
           onChange={onChange}
           placeholder="Buscar personaje..."
           autoComplete="off"
-          aria-label="Buscar personajes por nombre"
-          className="w-full bg-slate-950 text-slate-100 placeholder:text-slate-500 border border-slate-600 rounded-lg py-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-300 focus:bg-slate-900"
+          className="w-full bg-slate-950 text-slate-100 placeholder:text-slate-400 border border-slate-600 rounded-lg py-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-300 focus:bg-slate-900"
         />
 
         {/* Botón para limpiar */}

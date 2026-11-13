@@ -35,7 +35,7 @@ export default function Breadcrumbs({ items = [] }) {
                     >
                       {item.label}
                     </Link>
-                    <span aria-hidden="true" className="text-slate-600">
+                    <span aria-hidden="true" className="text-slate-400">
                       /
                     </span>
                   </>

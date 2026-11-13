@@ -4,11 +4,13 @@ import { CharacterRow } from "../components/CharacterCard";
 import ErrorState from "../components/ErrorState";
 import PageLoader from "../components/PageLoader";
 import { useEpisode } from "../hooks/useEpisode";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function EpisodioDetalle() {
   const { episodioId } = useParams();
   const { episode, characters, loading, error, notFound } =
     useEpisode(episodioId);
+  useDocumentTitle(episode?.name ?? "Episodio");
 
   const volverAction = (
     <Link
@@ -52,7 +54,7 @@ export default function EpisodioDetalle() {
             Fecha de emisión: {episode.air_date}
           </p>
 
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-slate-400">
             Personajes: {characters.length}
           </p>
         </div>

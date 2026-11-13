@@ -7,15 +7,22 @@ export function CharacterCard({ character }) {
   return (
     <Link
       to={`/personaje/${character.id}`}
-      className="flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 hover:shadow-md transition-shadow duration-300"
+      className="group flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 hover:shadow-md transition-shadow duration-300"
     >
       <img
         src={character.image}
         alt={character.name}
+        width="300"
+        height="300"
+        loading="lazy"
+        decoding="async"
         className="w-full h-auto rounded-lg mb-4 transition-transform duration-300 transform hover:scale-105"
       />
-      <p className="text-lg font-semibold text-slate-100 text-center hover:text-green-400 transition-colors duration-300">
-        {character.name} — {character.species}
+      <h2 className="text-lg font-semibold text-slate-100 text-center transition-colors duration-300 group-hover:text-green-400">
+        {character.name}
+      </h2>
+      <p className="mt-1 text-sm text-slate-400 text-center">
+        {character.species}
       </p>
     </Link>
   );
