@@ -45,7 +45,7 @@ export default function CharacterSearch({
           onChange={onChange}
           placeholder="Buscar personaje..."
           autoComplete="off"
-          className="w-full bg-transparent py-4 pl-12 pr-12 font-mono text-sm tracking-wide text-paper placeholder:text-muted focus:outline-none"
+          className="w-full bg-transparent py-4 pl-12 pr-12 font-mono text-base tracking-wide text-paper placeholder:text-muted focus:outline-none"
         />
 
         {/* Botón para limpiar */}

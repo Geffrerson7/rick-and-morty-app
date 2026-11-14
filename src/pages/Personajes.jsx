@@ -65,7 +65,7 @@ export default function Personajes() {
 
             <div className="flex flex-col justify-end gap-6 lg:col-span-4">
               <p
-                className="reveal max-w-sm text-sm leading-relaxed text-muted"
+                className="reveal max-w-sm text-base leading-relaxed text-muted"
                 style={{ "--reveal-index": 1 }}
               >
                 Descubre personajes de todos los rincones del multiverso.
@@ -121,7 +121,7 @@ export default function Personajes() {
                 Sin resultados
               </p>
 
-              <p className="mt-3 font-display text-2xl uppercase leading-tight text-paper">
+              <p className="mt-3 font-display text-3xl uppercase leading-tight text-paper">
                 No se encontraron personajes
                 {busqueda.trim() && (
                   <>
@@ -133,7 +133,7 @@ export default function Personajes() {
                 .
               </p>
 
-              <p className="mt-3 text-sm text-muted">
+              <p className="mt-3 text-base text-muted">
                 Prueba con otro nombre o revisa la ortografía.
               </p>
 

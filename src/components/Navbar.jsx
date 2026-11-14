@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 
 const enlaceBase =
-  "relative flex items-baseline gap-1.5 pb-1 font-mono text-label uppercase tracking-[0.14em] transition-colors duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:bg-acid after:transition-transform after:duration-300 sm:text-[11px] sm:tracking-[0.18em]";
+  "relative flex items-baseline gap-1.5 pb-1 font-mono text-label uppercase tracking-[0.14em] transition-colors duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:bg-acid after:transition-transform after:duration-300 sm:text-xs sm:tracking-[0.18em]";
 
 function EnlaceNav({ to, numero, children }) {
   return (
@@ -53,7 +53,7 @@ export default function Navbar() {
         </Link>
 
         {/* Navegación */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:gap-x-7">
+        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 sm:gap-x-7">
           <EnlaceNav to="/" numero="01">
             Personajes
           </EnlaceNav>
@@ -65,7 +65,7 @@ export default function Navbar() {
             href="https://rickandmortyapi.com/"
             target="_blank"
             rel="noreferrer"
-            className="group flex items-baseline gap-1.5 pb-1 font-mono text-label uppercase tracking-[0.14em] text-muted transition-colors duration-300 hover:text-acid sm:text-[11px] sm:tracking-[0.18em]"
+            className="group flex items-baseline gap-1.5 pb-1 font-mono text-label uppercase tracking-[0.14em] text-muted transition-colors duration-300 hover:text-acid sm:text-xs sm:tracking-[0.18em]"
           >
             <span aria-hidden="true" className="hidden text-micro opacity-70 sm:inline">
               03

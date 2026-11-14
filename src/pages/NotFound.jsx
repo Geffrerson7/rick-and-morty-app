@@ -17,7 +17,7 @@ export default function NotFound() {
         💥 ¡WUBBA LUBBA DUB DUB!
       </p>
 
-      <h1 className="mt-5 font-display text-3xl uppercase leading-tight sm:text-4xl">
+      <h1 className="mt-5 font-display text-4xl uppercase leading-tight sm:text-4xl">
         Página no encontrada
       </h1>
 

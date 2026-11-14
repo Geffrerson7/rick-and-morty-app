@@ -140,7 +140,7 @@ export default function PersonajeDetalle() {
                     <dt className="font-mono text-label uppercase tracking-[0.2em] text-muted">
                       {etiqueta}
                     </dt>
-                    <dd className="flex items-center gap-2 text-sm text-paper">
+                    <dd className="flex items-center gap-2 text-base text-paper">
                       {estado && (
                         <span
                           aria-hidden="true"

@@ -38,7 +38,7 @@ export function CharacterCard({ character, index }) {
       </div>
 
       <div className="flex flex-1 flex-col pt-4">
-        <h2 className="font-display text-xl uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid">
+        <h2 className="font-display text-2xl uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid">
           {character.name}
         </h2>
 
@@ -75,7 +75,7 @@ export function CharacterRow({ character, episodeId }) {
       />
 
       <div className="min-w-0 flex-1">
-        <h3 className="truncate font-display text-lg uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid">
+        <h3 className="truncate font-display text-xl uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid">
           {character.name}
         </h3>
 
