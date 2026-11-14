@@ -18,7 +18,7 @@ export default function EpisodeCard({ episode }) {
 
       {/* Título del episodio */}
       <div className="p-5">
-        <h2 className="font-display text-2xl uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid line-clamp-2">
+        <h2 className="font-display text-3xl uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid line-clamp-2">
           {episode.name}
         </h2>
       </div>
@@ -29,7 +29,7 @@ export default function EpisodeCard({ episode }) {
           {/* Métrica 1: Fecha de estreno */}
           <div className="flex flex-col">
             <dt className="text-muted">Transmisión</dt>
-            <dd className="mt-1 truncate text-paper">{episode.air_date}</dd>
+            <dd className="mt-1 text-paper">{episode.air_date}</dd>
           </div>
 
           {/* Métrica 2: Cantidad de personajes (.length) */}

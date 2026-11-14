@@ -45,7 +45,7 @@ export default class ErrorBoundary extends Component {
             💥 El multiverso se rompió
           </h1>
 
-          <p className="mt-3 text-sm text-muted">
+          <p className="mt-3 text-base text-muted">
             Algo falló al dibujar esta pantalla. Puedes reintentar; si el
             problema continúa, recarga la página.
           </p>

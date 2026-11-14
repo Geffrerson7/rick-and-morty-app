@@ -22,10 +22,10 @@ export default function ErrorState({
         >
           Señal perdida
         </p>
-        <h1 className="mt-3 font-display text-2xl uppercase leading-tight text-danger">
+        <h1 className="mt-3 font-display text-3xl uppercase leading-tight text-danger">
           {title}
         </h1>
-        <p className="mt-3 text-sm text-muted">{message}</p>
+        <p className="mt-3 text-base text-muted">{message}</p>
         {onRetry && (
           <button
             type="button"

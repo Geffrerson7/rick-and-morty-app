@@ -39,13 +39,13 @@
     ui-monospace, "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, monospace;
 
   /* Escala tipográfica fluida. */
-  --text-kicker: 0.6875rem;
+  --text-kicker: 0.75rem;
   --text-kicker--line-height: 1.4;
   --text-kicker--letter-spacing: 0.24em;
-  --text-label: 0.625rem;
+  --text-label: 0.6875rem;
   --text-label--line-height: 1.4;
   --text-label--letter-spacing: 0.2em;
-  --text-micro: 0.5625rem;
+  --text-micro: 0.625rem;
   --text-micro--line-height: 1.4;
   --text-micro--letter-spacing: 0.18em;
   --text-display-sm: clamp(2rem, 6vw, 3.5rem);

@@ -47,7 +47,7 @@ export default function Episodios() {
 
             <div className="flex flex-col justify-end gap-6 lg:col-span-4">
               <p
-                className="reveal max-w-sm text-sm leading-relaxed text-muted"
+                className="reveal max-w-sm text-base leading-relaxed text-muted"
                 style={{ "--reveal-index": 1 }}
               >
                 Explora aventuras, temporadas y viajes a través del multiverso.

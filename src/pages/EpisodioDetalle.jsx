@@ -68,8 +68,8 @@ export default function EpisodioDetalle() {
           </div>
 
           {/* Lista de personajes */}
-          <div className="mt-12 flex items-end justify-between gap-4">
-            <h2 className="font-display text-2xl uppercase text-paper">
+          <div className="mt-12 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            <h2 className="font-display text-3xl uppercase text-paper">
               Personajes del episodio
             </h2>
             <span
