@@ -36,7 +36,7 @@ export default function Layout() {
         id="contenido-principal"
         ref={mainRef}
         tabIndex={-1}
-        className="flex-1 focus:outline-none"
+        className="flex flex-1 flex-col focus:outline-none"
       >
         <Outlet />
       </main>

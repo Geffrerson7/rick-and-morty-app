@@ -40,9 +40,9 @@ export default function Personajes() {
   return (
     <>
       <Breadcrumbs items={[{ label: "Personajes", to: "/" }]} />
-      <div className="min-h-screen bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
+      <div className="flex-1 bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-7xl text-center">
-          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-5xl font-black tracking-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] sm:text-6xl">
+          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-4xl font-black tracking-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl">
             EXPLORADOR DIMENSIONAL
           </h1>
 
@@ -91,7 +91,7 @@ export default function Personajes() {
               <button
                 type="button"
                 onClick={handleClearInput}
-                className="mt-6 rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 transition-colors duration-300 hover:bg-green-400"
+                className="mt-6 rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 transition-all duration-300 hover:bg-green-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98]"
               >
                 Limpiar búsqueda
               </button>

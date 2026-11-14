@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const linkClass = ({ isActive }) =>
-    `transition-colors duration-300 ${
+    `rounded-md py-1 transition-colors duration-300 ${
       isActive
         ? "text-green-400"
         : "text-slate-300 hover:text-green-400"
@@ -12,18 +12,18 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur-md">
       <nav
         aria-label="Principal"
-        className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
+        className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3 sm:px-6 sm:py-4 lg:px-8"
       >
         {/* Logo */}
         <Link
           to="/"
-          className="text-xl font-black tracking-wide text-green-400 sm:text-2xl"
+          className="text-lg font-black tracking-wide text-green-400 sm:text-2xl"
         >
           RICK<span className="text-slate-100"> & </span>MORTY
         </Link>
 
         {/* Navegación */}
-        <div className="flex items-center gap-5 text-sm font-semibold sm:gap-8 sm:text-base">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-semibold sm:gap-8 sm:text-base">
           <NavLink to="/" end className={linkClass}>
             Personajes
           </NavLink>
@@ -35,7 +35,7 @@ export default function Navbar() {
             href="https://rickandmortyapi.com/"
             target="_blank"
             rel="noreferrer"
-            className="text-slate-300 transition-colors duration-300 hover:text-green-400"
+            className="rounded-md py-1 text-slate-300 transition-colors duration-300 hover:text-green-400"
           >
             API oficial ↗
           </a>
@@ -44,4 +44,3 @@ export default function Navbar() {
     </header>
   );
 }
-
