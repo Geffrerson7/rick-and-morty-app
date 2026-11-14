@@ -23,7 +23,7 @@ export default function Pagination({
         onClick={() => onChange((actual) => actual - 1)}
         disabled={disabled || page === 1}
         aria-label={`Página anterior de ${contexto}`}
-        className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
+        className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-all duration-300 hover:border-green-500 hover:text-green-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
       >
         ← Anterior
       </button>
@@ -37,7 +37,7 @@ export default function Pagination({
         onClick={() => onChange((actual) => actual + 1)}
         disabled={disabled || page === totalPages}
         aria-label={`Página siguiente de ${contexto}`}
-        className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-colors hover:border-green-500 hover:text-green-400 disabled:cursor-not-allowed disabled:opacity-40"
+        className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-2 font-semibold text-slate-200 transition-all duration-300 hover:border-green-500 hover:text-green-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
       >
         Siguiente →
       </button>

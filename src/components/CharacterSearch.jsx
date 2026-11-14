@@ -53,7 +53,7 @@ export default function CharacterSearch({
             type="button"
             onClick={onClear}
             aria-label="Limpiar búsqueda"
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-green-400 transition-colors duration-200"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition-colors duration-200 hover:text-green-400 focus-visible:ring-2 focus-visible:ring-green-400"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -61,10 +61,11 @@ export default function CharacterSearch({
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
               className="icon icon-tabler icons-tabler-outline icon-tabler-x"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />

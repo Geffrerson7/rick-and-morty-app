@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { traducirEspecie, traducirEstado } from "../helpers/textos";
 
 /**
  * Tarjeta de personaje del listado principal.
@@ -12,7 +13,7 @@ export function CharacterCard({ character }) {
     <Link
       to={`/personaje/${character.id}`}
       state={{ desde: `${pathname}${search}` }}
-      className="group flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 hover:shadow-md transition-shadow duration-300"
+      className="group flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 transition-all duration-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.99]"
     >
       <img
         src={character.image}
@@ -27,7 +28,7 @@ export function CharacterCard({ character }) {
         {character.name}
       </h2>
       <p className="mt-1 text-sm text-slate-400 text-center">
-        {character.species}
+        {traducirEspecie(character.species)}
       </p>
     </Link>
   );
@@ -41,7 +42,7 @@ export function CharacterRow({ character, episodeId }) {
   return (
     <Link
       to={`/episodios/${episodeId}/personaje/${character.id}`}
-      className="flex items-center gap-4 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-all duration-300 hover:border-green-500 hover:bg-slate-900"
+      className="flex items-center gap-4 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-all duration-300 hover:border-green-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.99]"
     >
       <img
         src={character.image}
@@ -55,11 +56,11 @@ export function CharacterRow({ character, episodeId }) {
         </h3>
 
         <p className="mt-1 text-sm text-slate-400">
-          Especie: {character.species}
+          Especie: {traducirEspecie(character.species)}
         </p>
 
         <p className="mt-1 text-sm text-slate-400">
-          Estado: {character.status}
+          Estado: {traducirEstado(character.status)}
         </p>
 
         <span className="mt-3 inline-block text-xs font-bold text-slate-300">

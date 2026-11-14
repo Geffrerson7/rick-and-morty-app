@@ -45,7 +45,7 @@ export default function EpisodeCard({ episode }) {
             </span>
             <span className="mt-1 flex items-center text-sm font-black text-lime-400">
               {episode.characters?.length || 0}
-              <span className="ml-1 text-[11px] font-normal text-slate-400">
+              <span className="ml-1 text-xs font-normal text-slate-400">
                 en escena
               </span>
             </span>
@@ -55,7 +55,7 @@ export default function EpisodeCard({ episode }) {
         {/* Botón de acción cosmético / expandible */}
         <Link
           to={`/episodios/${episode.id}`}
-          className="mt-4 block w-full rounded-xl bg-slate-800 py-2.5 text-center text-xs font-bold text-slate-300 transition-all duration-300 hover:bg-lime-500 hover:text-slate-950 active:scale-[0.98]"
+          className="mt-4 block w-full rounded-xl bg-slate-800 py-2.5 text-center text-xs font-bold text-slate-300 transition-all duration-300 hover:bg-lime-500 hover:text-slate-950 focus-visible:ring-2 focus-visible:ring-lime-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 active:scale-[0.98]"
         >
           Ver Reporte de Misión
         </Link>

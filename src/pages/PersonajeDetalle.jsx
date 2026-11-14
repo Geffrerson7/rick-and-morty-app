@@ -5,6 +5,11 @@ import PageLoader from "../components/PageLoader";
 import { useCharacter } from "../hooks/useCharacters";
 import { useEpisodeSummary } from "../hooks/useEpisode";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import {
+  traducirEspecie,
+  traducirEstado,
+  traducirGenero,
+} from "../helpers/textos";
 
 export default function PersonajeDetalle() {
   const { id, episodioId, personajeId } = useParams();
@@ -55,9 +60,9 @@ export default function PersonajeDetalle() {
   return (
     <>
       <Breadcrumbs items={items} />
-      <div className="min-h-screen bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
+      <div className="flex-1 bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
         <div className="mx-auto mb-16 max-w-7xl text-center">
-          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-5xl font-black tracking-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] sm:text-6xl">
+          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-4xl font-black tracking-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl">
             EXPEDIENTE DIMENSIONAL
           </h1>
 
@@ -94,17 +99,17 @@ export default function PersonajeDetalle() {
             <div className="mt-4 space-y-3 text-slate-400">
               <p>
                 <span className="font-semibold text-slate-200">Estado:</span>{" "}
-                {character.status}
+                {traducirEstado(character.status)}
               </p>
 
               <p>
                 <span className="font-semibold text-slate-200">Especie:</span>{" "}
-                {character.species}
+                {traducirEspecie(character.species)}
               </p>
 
               <p>
                 <span className="font-semibold text-slate-200">Género:</span>{" "}
-                {character.gender}
+                {traducirGenero(character.gender)}
               </p>
 
               <p>

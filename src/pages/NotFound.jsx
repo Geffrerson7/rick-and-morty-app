@@ -5,7 +5,7 @@ export default function NotFound() {
   useDocumentTitle("Página no encontrada");
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-slate-950 text-white">
+    <div className="flex flex-1 flex-col items-center justify-center bg-slate-950 text-white">
       <div className="max-w-md rounded-2xl bg-red-950/20 p-8 text-center border border-red-500/40 backdrop-blur-sm">
         <p className="text-2xl font-black text-red-500 tracking-wide mb-1">
           💥 ¡WUBBA LUBBA DUB DUB!

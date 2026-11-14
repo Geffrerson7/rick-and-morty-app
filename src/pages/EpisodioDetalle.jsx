@@ -39,10 +39,10 @@ export default function EpisodioDetalle() {
           { label: episode.name, to: `/episodios/${episode.id}` },
         ]}
       />
-      <div className="min-h-screen bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
+      <div className="flex-1 bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
         {/* Información del episodio */}
         <div className="mx-auto mb-12 max-w-7xl text-center">
-          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-4xl font-black text-transparent sm:text-5xl p-3">
+          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-4xl font-black text-transparent sm:text-5xl lg:text-6xl p-3">
             {episode.name}
           </h1>
 

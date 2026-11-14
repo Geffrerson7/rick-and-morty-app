@@ -13,7 +13,7 @@ export default function ErrorState({
   return (
     <div
       role="alert"
-      className="flex min-h-[60vh] items-center justify-center px-4 py-20"
+      className="flex flex-1 items-center justify-center px-4 py-20"
     >
       <div className="max-w-md rounded-2xl bg-red-950/20 p-8 text-center border border-red-500/40 backdrop-blur-sm">
         <h1 className="text-2xl font-black text-red-500 tracking-wide">
@@ -24,7 +24,7 @@ export default function ErrorState({
           <button
             type="button"
             onClick={onRetry}
-            className="mt-6 inline-block rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 hover:bg-green-400 transition-colors duration-300"
+            className="mt-6 inline-block rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 transition-all duration-300 hover:bg-green-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98]"
           >
             ↻ Reintentar
           </button>
