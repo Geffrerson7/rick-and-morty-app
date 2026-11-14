@@ -1,133 +1,112 @@
-
 # Rick and Morty Explorer
 
-A web application built with React that allows users to explore characters and episodes from the Rick and Morty universe using the official API.
+A character and episode explorer built with React and the public [Rick and Morty API](https://rickandmortyapi.com/).
+
+![Character list](docs/screenshots/portada.png)
+
+![Character detail](docs/screenshots/detalle.png)
 
 ## Features
 
-- **Character Explorer:** Browse characters and view their information.
-- **Character Search:** Search for characters by name.
-- **Character Details:** View character images, status, species, gender, origin, and location.
-- **Episode Explorer:** Browse episodes and view their information.
-- **Episode Details:** Explore episode information and its associated characters.
-- **Nested Navigation:** Navigate from episodes to character details while preserving the episode context.
-- **Dynamic Breadcrumbs:** Navigate between pages using reusable breadcrumbs.
-- **Loading and Error States:** Display feedback while fetching data or when requests fail.
-- **Responsive Design:** Adapt the interface to different screen sizes.
+- **Character browser:** paginated grid with a debounced search (500 ms).
+- **Shareable state:** the current page and search live in the URL (`/?page=2&name=rick`), so reloading or sharing a link keeps the view.
+- **Character details:** status, species, gender, origin and location, with a back link that returns to the list you came from.
+- **Episode browser:** paginated episode archive with season/episode badges and a character count.
+- **Episode details:** air date and the full cast of the episode.
+- **Nested navigation:** open a character from an episode and keep the episode in the breadcrumb.
+- **Resilience:** request timeout with abort, one retry on network failures, explicit error states with a retry button, and an error boundary for render failures.
+- **Accessibility:** skip link, focus moved to the main region on navigation, visible focus rings, semantic headings and landmarks, and announcements for loading/error states.
+- **Responsive layout:** verified with no horizontal scroll from 320 px up.
 
 ## Tech Stack
 
-- **React** — UI development.
-- **Vite** — Development server and build tool.
-- **React Router** — Client-side routing and nested routes.
-- **Tailwind CSS** — Utility-first styling.
-- **Material Tailwind** — Breadcrumb navigation components.
-- **Rick and Morty API** — Character and episode data.
-- **JavaScript (ES6+)** — Application logic.
-- **pnpm** — Package management.
+- **React 19** – UI.
+- **Vite 8** – dev server, build and code splitting.
+- **React Router 7** – routing and nested routes.
+- **Tailwind CSS 4** – styling.
+- **Custom breadcrumbs** – replaces Material Tailwind (see [Notes](#notes)).
+- **Vitest + Testing Library + MSW** – tests with a mocked API.
+- **pnpm** – package manager.
 
 ## API
 
-This project uses the public Rick and Morty API.
+This project uses the public Rick and Morty API. No API key is required.
 
-- API documentation: https://rickandmortyapi.com/documentation
-- Base URL: https://rickandmortyapi.com/api
-
-No API key is required.
+- Documentation: <https://rickandmortyapi.com/documentation>
+- Base URL: `https://rickandmortyapi.com/api`
 
 ## Getting Started
 
-### Prerequisites
+Requirements: Node.js and pnpm.
 
-Make sure you have installed:
+```bash
+git clone <YOUR_REPOSITORY_URL>
+cd <PROJECT_DIRECTORY>
+pnpm install
+pnpm dev
+```
 
-- Node.js
-- pnpm
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone <YOUR_REPOSITORY_URL>
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd <PROJECT_DIRECTORY>
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   pnpm install
-   ```
-
-4. Start the development server:
-
-   ```bash
-   pnpm dev
-   ```
-
-5. Open the local URL displayed in your terminal, usually:
-
-   ```text
-   http://localhost:5173
-   ```
+Open the URL printed in the terminal, usually <http://localhost:5173>.
 
 ## Available Scripts
 
 | Command | Description |
 |---|---|
 | `pnpm dev` | Start the development server. |
-| `pnpm build` | Build the application for production. |
-| `pnpm preview` | Preview the production build locally. |
-| `pnpm lint` | Run ESLint to check code quality. |
+| `pnpm build` | Build for production. |
+| `pnpm preview` | Serve the production build locally. |
+| `pnpm lint` | Run ESLint. |
+| `pnpm test` | Run the test suite once. |
+| `pnpm test:watch` | Run the tests in watch mode. |
+| `pnpm test:coverage` | Run the tests with a coverage report. |
 
-## Application Routes
+## Routes
 
 | Route | Description |
 |---|---|
-| `/` | Browse characters. |
-| `/personaje/:id` | View character details. |
-| `/episodios` | Browse episodes. |
-| `/episodios/:episodioId` | View episode details. |
-| `/episodios/:episodioId/personaje/:personajeId` | View a character from a specific episode. |
-| `*` | Display the not-found page. |
+| `/` | Character browser. |
+| `/personaje/:id` | Character details. |
+| `/episodios` | Episode browser. |
+| `/episodios/:episodioId` | Episode details and cast. |
+| `/episodios/:episodioId/personaje/:personajeId` | Character details inside an episode. |
+| `*` | Not-found page. |
 
 ## Project Structure
 
 ```text
 src/
-├── components/
-│   ├── Breadcrumbs.jsx
-│   ├── Layout.jsx
-│   └── ...
-├── helpers/
-│   └── api.js
-├── pages/
-│   ├── Episodios.jsx
-│   ├── EpisodioDetalle.jsx
-│   ├── Personajes.jsx
-│   ├── PersonajeDetalle.jsx
-│   └── NotFound.jsx
-├── App.jsx
-└── main.jsx
+├── components/     # Navbar, footer, cards, search, pagination, states
+├── helpers/        # API client and text translations
+├── hooks/          # Data fetching, URL state and document title
+├── pages/          # Route components
+├── test/           # Test setup, MSW handlers and fixtures
+├── App.jsx         # Lazy routes
+└── main.jsx        # Entry point, router and error boundary
 ```
 
-This structure separates reusable components, API helpers, page components, and route configuration.
+## Deployment
 
-## Future Improvements
+`pnpm build` writes a static site to `dist/`. Because the app uses client-side
+routing, the host must serve `index.html` for unknown paths:
 
-- Add pagination for characters and episodes.
-- Improve search and filtering options.
-- Add automated tests.
-- Improve accessibility and keyboard navigation.
-- Deploy the application to a hosting platform.
+- **Vercel / Netlify:** add a rewrite of `/*` to `/index.html`.
+- **GitHub Pages:** use a 404 fallback or a SPA redirect script.
+
+No live demo is linked yet; the screenshots above were captured from a local
+production build (`pnpm build && pnpm preview`).
+
+## Notes
+
+- **Material Tailwind was removed.** It pulled a full component library for a
+  single breadcrumb and declared React 16–18 peer dependencies while the app
+  runs React 19. A small in-house breadcrumb keeps the behaviour and brings the
+  initial bundle down to ~266 kB (≈85 kB gzip).
+- **API values are translated** for display (status, species, gender) so the
+  Spanish UI never mixes languages; unknown values are shown as they arrive.
 
 ## Credits
 
 Character and episode data provided by the [Rick and Morty API](https://rickandmortyapi.com/).
 
-This project is an independent fan-made application and is not affiliated with the official Rick and Morty franchise.
+This is an independent fan-made application, not affiliated with the official
+Rick and Morty franchise.
