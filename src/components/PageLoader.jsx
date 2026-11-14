@@ -7,20 +7,32 @@ export default function PageLoader({
   message = "CARGANDO MULTIVERSO...",
   inline = false,
 }) {
+  const indicador = (
+    <span
+      aria-hidden="true"
+      className="relative flex h-10 w-10 items-center justify-center"
+    >
+      <span className="absolute inset-0 rounded-full border border-line" />
+      <span className="absolute inset-0 rounded-full border-2 border-transparent border-t-acid motion-safe:animate-spin" />
+      <span className="h-1 w-1 rounded-full bg-acid" />
+    </span>
+  );
+
+  const texto = (
+    <span className="font-mono text-label uppercase tracking-[0.24em] text-muted">
+      {message}
+    </span>
+  );
+
   if (inline) {
     return (
       <div
         role="status"
         aria-live="polite"
-        className="mt-10 flex flex-wrap items-center justify-center gap-3 py-16"
+        className="mt-10 flex flex-wrap items-center justify-center gap-4 border border-line bg-ink-soft/30 py-14"
       >
-        <div className="relative flex h-12 w-12 items-center justify-center">
-          <div className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></div>
-          <div className="relative inline-flex h-8 w-8 rounded-full bg-green-500"></div>
-        </div>
-        <span className="text-lg font-bold tracking-widest text-green-400 motion-safe:animate-pulse">
-          {message}
-        </span>
+        {indicador}
+        {texto}
       </div>
     );
   }
@@ -29,15 +41,10 @@ export default function PageLoader({
     <div
       role="status"
       aria-live="polite"
-      className="flex flex-1 items-center justify-center bg-slate-950 text-white"
+      className="flex min-h-[100svh] flex-1 items-center justify-center gap-4 bg-ink py-24"
     >
-      <div className="relative flex h-16 w-16 items-center justify-center">
-        <div className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></div>
-        <div className="relative inline-flex rounded-full h-12 w-12 bg-green-500"></div>
-      </div>
-      <span className="ml-4 text-xl font-bold tracking-widest text-green-400 motion-safe:animate-pulse">
-        {message}
-      </span>
+      {indicador}
+      {texto}
     </div>
   );
 }

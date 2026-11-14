@@ -22,10 +22,10 @@ export default function Layout() {
   }, [pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-950 text-slate-100">
+    <div className="grain flex min-h-screen flex-col bg-ink text-paper">
       <a
         href="#contenido-principal"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-green-500 focus:px-4 focus:py-2 focus:font-bold focus:text-slate-950"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-acid focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:font-bold focus:uppercase focus:tracking-[0.2em] focus:text-ink"
       >
         Saltar al contenido
       </a>

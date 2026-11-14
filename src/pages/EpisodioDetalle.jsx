@@ -15,7 +15,7 @@ export default function EpisodioDetalle() {
   const volverAction = (
     <Link
       to="/episodios"
-      className="mt-4 inline-block text-green-400 hover:text-green-500 transition-colors duration-300"
+      className="mt-4 inline-block font-mono text-label uppercase tracking-[0.2em] text-acid transition-colors duration-300 hover:text-paper"
     >
       ← Volver al listado
     </Link>
@@ -39,33 +39,49 @@ export default function EpisodioDetalle() {
           { label: episode.name, to: `/episodios/${episode.id}` },
         ]}
       />
-      <div className="flex-1 bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
-        {/* Información del episodio */}
-        <div className="mx-auto mb-12 max-w-7xl text-center">
-          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-4xl font-black text-transparent sm:text-5xl lg:text-6xl p-3">
-            {episode.name}
-          </h1>
+      <div className="flex-1 bg-[radial-gradient(120%_80%_at_50%_-10%,var(--color-ink-soft),var(--color-ink)_70%)] px-4 pb-24 pt-8 text-paper sm:px-6 lg:px-10">
+        <div className="mx-auto max-w-[1400px]">
+          {/* Información del episodio */}
+          <div className="grid gap-10 border-b border-line pb-10 lg:grid-cols-12 lg:items-end lg:gap-8">
+            <div className="lg:col-span-8">
+              <p className="font-mono text-label uppercase tracking-[0.28em] text-acid">
+                {episode.episode} / Registro de misión
+              </p>
 
-          <p className="mt-4 text-lg font-bold text-green-400">
-            {episode.episode}
-          </p>
+              <h1 className="mt-4 font-display text-display uppercase leading-[0.9] text-paper">
+                {episode.name}
+              </h1>
+            </div>
 
-          <p className="mt-2 text-slate-400">
-            Fecha de emisión: {episode.air_date}
-          </p>
+            <dl className="grid grid-cols-2 gap-px border border-line bg-line font-mono text-label uppercase tracking-[0.18em] lg:col-span-4">
+              <div className="bg-ink px-4 py-3">
+                <dt className="text-muted">Emisión</dt>
+                <dd className="mt-1 text-paper">{episode.air_date}</dd>
+              </div>
+              <div className="bg-ink px-4 py-3">
+                <dt className="text-muted">Personajes</dt>
+                <dd className="mt-1 text-acid tabular-nums">
+                  {characters.length}
+                </dd>
+              </div>
+            </dl>
+          </div>
 
-          <p className="mt-2 text-sm text-slate-400">
-            Personajes: {characters.length}
-          </p>
-        </div>
+          {/* Lista de personajes */}
+          <div className="mt-12 flex items-end justify-between gap-4">
+            <h2 className="font-display text-2xl uppercase text-paper">
+              Personajes del episodio
+            </h2>
+            <span
+              aria-hidden="true"
+              className="mb-2 hidden h-px flex-1 bg-line sm:block"
+            />
+            <span className="font-mono text-label uppercase tracking-[0.2em] text-muted">
+              {characters.length} fichas
+            </span>
+          </div>
 
-        {/* Lista de personajes */}
-        <div className="mx-auto max-w-7xl">
-          <h2 className="mb-6 text-2xl font-bold text-slate-100">
-            Personajes del episodio
-          </h2>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {characters.map((character) => (
               <CharacterRow
                 key={character.id}
@@ -74,15 +90,17 @@ export default function EpisodioDetalle() {
               />
             ))}
           </div>
-        </div>
 
-        <div className="mt-12 text-center">
-          <Link
-            to="/episodios"
-            className="inline-block text-green-400 transition-colors hover:text-green-300"
-          >
-            ← Volver a episodios
-          </Link>
+          <div className="mt-12 border-t border-line pt-6">
+            <Link
+              to="/episodios"
+              viewTransition
+              className="inline-flex items-center gap-2 font-mono text-label uppercase tracking-[0.2em] text-muted transition-colors duration-300 hover:text-acid"
+            >
+              <span aria-hidden="true">←</span>
+              Volver a episodios
+            </Link>
+          </div>
         </div>
       </div>
     </>

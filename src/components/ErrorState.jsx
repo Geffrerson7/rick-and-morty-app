@@ -13,18 +13,24 @@ export default function ErrorState({
   return (
     <div
       role="alert"
-      className="flex flex-1 items-center justify-center px-4 py-20"
+      className="flex flex-1 items-center justify-center px-4 py-24"
     >
-      <div className="max-w-md rounded-2xl bg-red-950/20 p-8 text-center border border-red-500/40 backdrop-blur-sm">
-        <h1 className="text-2xl font-black text-red-500 tracking-wide">
+      <div className="w-full max-w-md border border-danger/40 bg-danger/5 p-8 text-center">
+        <p
+          aria-hidden="true"
+          className="font-mono text-label uppercase tracking-[0.3em] text-danger"
+        >
+          Señal perdida
+        </p>
+        <h1 className="mt-3 font-display text-2xl uppercase leading-tight text-danger">
           {title}
         </h1>
-        <p className="mt-3 text-slate-400 font-medium">{message}</p>
+        <p className="mt-3 text-sm text-muted">{message}</p>
         {onRetry && (
           <button
             type="button"
             onClick={onRetry}
-            className="mt-6 inline-block rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 transition-all duration-300 hover:bg-green-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98]"
+            className="mt-6 inline-block border border-danger/60 px-5 py-2 font-mono text-label uppercase tracking-[0.2em] text-paper transition-colors duration-300 hover:border-acid hover:text-acid focus-visible:ring-2 focus-visible:ring-acid focus-visible:ring-offset-2 focus-visible:ring-offset-ink active:scale-[0.98]"
           >
             ↻ Reintentar
           </button>

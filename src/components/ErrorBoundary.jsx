@@ -32,14 +32,20 @@ export default class ErrorBoundary extends Component {
     return (
       <div
         role="alert"
-        className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-20 text-slate-100"
+        className="flex min-h-screen items-center justify-center bg-ink px-4 py-20 text-paper"
       >
-        <div className="max-w-md rounded-2xl border border-red-500/40 bg-red-950/20 p-8 text-center backdrop-blur-sm">
-          <h1 className="text-2xl font-black tracking-wide text-red-500">
+        <div className="w-full max-w-md border border-danger/40 bg-danger/5 p-8 text-center">
+          <p
+            aria-hidden="true"
+            className="font-mono text-label uppercase tracking-[0.3em] text-danger"
+          >
+            Fallo crítico
+          </p>
+          <h1 className="mt-3 font-display text-3xl uppercase leading-tight text-danger">
             💥 El multiverso se rompió
           </h1>
 
-          <p className="mt-3 text-sm text-slate-400">
+          <p className="mt-3 text-sm text-muted">
             Algo falló al dibujar esta pantalla. Puedes reintentar; si el
             problema continúa, recarga la página.
           </p>
@@ -47,7 +53,7 @@ export default class ErrorBoundary extends Component {
           <button
             type="button"
             onClick={this.reiniciar}
-            className="mt-6 rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 transition-all duration-300 hover:bg-green-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98]"
+            className="mt-6 border border-danger/60 px-5 py-2 font-mono text-label uppercase tracking-[0.2em] text-paper transition-colors duration-300 hover:border-acid hover:text-acid focus-visible:ring-2 focus-visible:ring-acid focus-visible:ring-offset-2 focus-visible:ring-offset-ink active:scale-[0.98]"
           >
             ↻ Reintentar
           </button>
