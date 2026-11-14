@@ -5,22 +5,29 @@ export default function NotFound() {
   useDocumentTitle("Página no encontrada");
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-slate-950 text-white">
-      <div className="max-w-md rounded-2xl bg-red-950/20 p-8 text-center border border-red-500/40 backdrop-blur-sm">
-        <p className="text-2xl font-black text-red-500 tracking-wide mb-1">
-          💥 ¡WUBBA LUBBA DUB DUB!
-        </p>
-        <p className="text-4xl font-bold text-red-500 mb-1">404</p>
-        <h1 className="ml-4 text-xl font-medium mb-2">
-          Página no encontrada
-        </h1>
-        <Link
-          to="/"
-          className="ml-4 text-green-400 hover:text-green-500 transition-colors duration-300"
-        >
-          ← Volver al listado
-        </Link>
-      </div>
+    <div className="blueprint flex flex-1 flex-col items-center justify-center bg-ink px-4 py-24 text-paper">
+      <p
+        aria-hidden="true"
+        className="font-display text-[clamp(5rem,22vw,11rem)] leading-none text-acid"
+      >
+        404
+      </p>
+
+      <p className="mt-2 font-mono text-label uppercase tracking-[0.28em] text-muted">
+        💥 ¡WUBBA LUBBA DUB DUB!
+      </p>
+
+      <h1 className="mt-5 font-display text-3xl uppercase leading-tight sm:text-4xl">
+        Página no encontrada
+      </h1>
+
+      <Link
+        to="/"
+        viewTransition
+        className="mt-8 border border-line px-6 py-3 font-mono text-label uppercase tracking-[0.2em] text-paper transition-colors duration-300 hover:border-acid hover:text-acid focus-visible:ring-2 focus-visible:ring-acid focus-visible:ring-offset-2 focus-visible:ring-offset-ink active:scale-[0.98]"
+      >
+        ← Volver al listado
+      </Link>
     </div>
   );
 }

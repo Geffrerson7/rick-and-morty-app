@@ -6,30 +6,49 @@ import { traducirEspecie, traducirEstado } from "../helpers/textos";
  * El enlace guarda la URL del listado (página y búsqueda incluidas) para que la
  * ficha pueda ofrecer una vuelta exacta al punto de partida.
  */
-export function CharacterCard({ character }) {
+export function CharacterCard({ character, index }) {
   const { pathname, search } = useLocation();
 
   return (
     <Link
       to={`/personaje/${character.id}`}
       state={{ desde: `${pathname}${search}` }}
-      className="group flex flex-col items-center rounded-2xl bg-slate-950/20 p-6 shadow-sm border border-slate-800 transition-all duration-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.99]"
+      viewTransition
+      className="group relative flex flex-col border border-line bg-ink-soft/40 p-3 transition-colors duration-300 hover:border-acid/60 focus-visible:ring-2 focus-visible:ring-acid focus-visible:ring-offset-2 focus-visible:ring-offset-ink active:scale-[0.99]"
     >
-      <img
-        src={character.image}
-        alt={character.name}
-        width="300"
-        height="300"
-        loading="lazy"
-        decoding="async"
-        className="w-full h-auto rounded-lg mb-4 transition-transform duration-300 transform hover:scale-105"
-      />
-      <h2 className="text-lg font-semibold text-slate-100 text-center transition-colors duration-300 group-hover:text-green-400">
-        {character.name}
-      </h2>
-      <p className="mt-1 text-sm text-slate-400 text-center">
-        {traducirEspecie(character.species)}
-      </p>
+      {Number.isInteger(index) && (
+        <span
+          aria-hidden="true"
+          className="absolute right-3 top-3 z-10 bg-ink/85 px-1.5 py-0.5 font-mono text-micro tracking-[0.18em] text-muted"
+        >
+          {String(index + 1).padStart(3, "0")}
+        </span>
+      )}
+
+      <div className="overflow-hidden bg-ink">
+        <img
+          src={character.image}
+          alt={character.name}
+          width="300"
+          height="300"
+          loading="lazy"
+          decoding="async"
+          className="aspect-square w-full object-cover grayscale-[35%] transition duration-500 group-hover:scale-[1.03] group-hover:grayscale-0"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col pt-4">
+        <h2 className="font-display text-xl uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid">
+          {character.name}
+        </h2>
+
+        <div className="mt-auto flex items-baseline justify-between gap-2 pt-3 font-mono text-label uppercase tracking-[0.16em] text-muted">
+          <span>{traducirEspecie(character.species)}</span>
+          <span className="text-paper/70">
+            {traducirEstado(character.status)}
+          </span>
+        </div>
+      </div>
     </Link>
   );
 }
@@ -42,28 +61,33 @@ export function CharacterRow({ character, episodeId }) {
   return (
     <Link
       to={`/episodios/${episodeId}/personaje/${character.id}`}
-      className="flex items-center gap-4 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-all duration-300 hover:border-green-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.99]"
+      viewTransition
+      className="group flex items-center gap-4 border border-line bg-ink-soft/30 p-3 transition-colors duration-300 hover:border-acid/60 focus-visible:ring-2 focus-visible:ring-acid focus-visible:ring-offset-2 focus-visible:ring-offset-ink active:scale-[0.99]"
     >
       <img
         src={character.image}
         alt={character.name}
-        className="h-24 w-24 shrink-0 rounded-lg object-cover"
+        width="300"
+        height="300"
+        loading="lazy"
+        decoding="async"
+        className="h-20 w-20 shrink-0 border border-line object-cover grayscale-[25%] transition duration-500 group-hover:grayscale-0"
       />
 
-      <div className="min-w-0">
-        <h3 className="truncate text-lg font-bold text-green-400">
+      <div className="min-w-0 flex-1">
+        <h3 className="truncate font-display text-lg uppercase leading-tight text-paper transition-colors duration-300 group-hover:text-acid">
           {character.name}
         </h3>
 
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 font-mono text-label uppercase tracking-[0.16em] text-muted">
           Especie: {traducirEspecie(character.species)}
         </p>
 
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-0.5 font-mono text-label uppercase tracking-[0.16em] text-muted">
           Estado: {traducirEstado(character.status)}
         </p>
 
-        <span className="mt-3 inline-block text-xs font-bold text-slate-300">
+        <span className="mt-2 inline-block font-mono text-label uppercase tracking-[0.2em] text-acid">
           Ver expediente →
         </span>
       </div>

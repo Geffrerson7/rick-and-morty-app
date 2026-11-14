@@ -2,9 +2,9 @@
 
 A character and episode explorer built with React and the public [Rick and Morty API](https://rickandmortyapi.com/).
 
-![Character list](docs/screenshots/portada.png)
+![Character list](docs/screenshots/portada.jpg)
 
-![Character detail](docs/screenshots/detalle.png)
+![Character detail](docs/screenshots/detalle.jpg)
 
 ## Features
 

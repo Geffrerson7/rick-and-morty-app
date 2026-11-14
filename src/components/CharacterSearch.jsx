@@ -13,20 +13,21 @@ export default function CharacterSearch({
   const idText = useId();
 
   return (
-    <div className="mx-auto max-w-7xl mb-16 flex justify-center">
-      <div className="relative w-64 sm:w-80">
+    <div className="w-full">
+      <div className="group relative border border-line bg-ink-soft/50 transition-colors duration-300 focus-within:border-acid focus-within:ring-1 focus-within:ring-acid">
         {/* Icono de búsqueda */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+          aria-hidden="true"
+          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted transition-colors duration-300 group-focus-within:text-acid"
         >
           <circle cx="10" cy="10" r="7" />
           <path d="m21 21-6-6" />
@@ -44,7 +45,7 @@ export default function CharacterSearch({
           onChange={onChange}
           placeholder="Buscar personaje..."
           autoComplete="off"
-          className="w-full bg-slate-950 text-slate-100 placeholder:text-slate-400 border border-slate-600 rounded-lg py-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors duration-300 focus:bg-slate-900"
+          className="w-full bg-transparent py-4 pl-12 pr-12 font-mono text-sm tracking-wide text-paper placeholder:text-muted focus:outline-none"
         />
 
         {/* Botón para limpiar */}
@@ -53,12 +54,12 @@ export default function CharacterSearch({
             type="button"
             onClick={onClear}
             aria-label="Limpiar búsqueda"
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition-colors duration-200 hover:text-green-400 focus-visible:ring-2 focus-visible:ring-green-400"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted transition-colors duration-200 hover:text-acid focus-visible:ring-2 focus-visible:ring-acid"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -66,7 +67,6 @@ export default function CharacterSearch({
               strokeLinecap="round"
               strokeLinejoin="round"
               aria-hidden="true"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-x"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M18 6l-12 12" />

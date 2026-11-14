@@ -40,70 +40,125 @@ export default function Personajes() {
   return (
     <>
       <Breadcrumbs items={[{ label: "Personajes", to: "/" }]} />
-      <div className="flex-1 bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-16 max-w-7xl text-center">
-          <h1 className="bg-linear-to-r from-lime-400 via-green-400 to-emerald-500 bg-clip-text text-4xl font-black tracking-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] sm:text-5xl lg:text-6xl">
-            EXPLORADOR DIMENSIONAL
-          </h1>
+      <div className="flex-1 bg-[radial-gradient(120%_80%_at_50%_-10%,var(--color-ink-soft),var(--color-ink)_70%)] px-4 pb-20 pt-8 text-paper sm:px-6 lg:px-10">
+        <div className="mx-auto max-w-[1400px]">
+          {/* Cinta de archivo */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line pb-3 font-mono text-label uppercase tracking-[0.24em] text-muted">
+            <span className="inline-flex items-center gap-2 text-acid">
+              <span aria-hidden="true" className="h-1.5 w-1.5 bg-acid" />
+              Archivo 001
+            </span>
+            <span>Catálogo de personajes</span>
+            <span aria-hidden="true" className="ml-auto hidden sm:inline">
+              C-137 / Multiverso
+            </span>
+          </div>
 
-          <p className="mx-auto mt-4 max-w-md text-lg font-medium tracking-wide text-slate-400">
-            Descubre personajes de todos los rincones del multiverso.
-          </p>
-        </div>
+          {/* Portada editorial */}
+          <div className="grid gap-10 pt-10 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-8">
+              <h1 className="reveal font-display text-display uppercase text-paper">
+                EXPLORADOR{" "}
+                <span className="block text-acid">DIMENSIONAL</span>
+              </h1>
+            </div>
 
-        <CharacterSearch
-          value={busqueda}
-          onChange={handleChange}
-          onClear={handleClearInput}
-          inputRef={inputRef}
-        />
-
-        {/* La paginación se mantiene visible aunque la búsqueda no tenga resultados */}
-        <Pagination
-          page={pagina}
-          totalPages={totalPages}
-          onChange={setPagina}
-          disabled={loading || characters.length === 0}
-          contexto="personajes"
-        />
-
-        {loading ? (
-          <PageLoader inline message="CARGANDO PERSONAJES..." />
-        ) : characters.length === 0 ? (
-          <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-slate-800 bg-slate-950/40 p-8 text-center">
-            <p className="text-lg font-semibold text-slate-200">
-              No se encontraron personajes
-              {busqueda.trim() && (
-                <>
-                  {" "}
-                  para{" "}
-                  <span className="text-green-400">«{busqueda.trim()}»</span>
-                </>
-              )}
-              .
-            </p>
-
-            <p className="mt-2 text-sm text-slate-400">
-              Prueba con otro nombre o revisa la ortografía.
-            </p>
-
-            {busqueda && (
-              <button
-                type="button"
-                onClick={handleClearInput}
-                className="mt-6 rounded-lg bg-green-500 px-5 py-2 font-bold text-slate-950 transition-all duration-300 hover:bg-green-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98]"
+            <div className="flex flex-col justify-end gap-6 lg:col-span-4">
+              <p
+                className="reveal max-w-sm text-sm leading-relaxed text-muted"
+                style={{ "--reveal-index": 1 }}
               >
-                Limpiar búsqueda
-              </button>
-            )}
+                Descubre personajes de todos los rincones del multiverso.
+              </p>
+
+              <dl
+                className="reveal grid grid-cols-2 gap-px border border-line bg-line font-mono text-label uppercase tracking-[0.18em]"
+                style={{ "--reveal-index": 2 }}
+              >
+                <div className="bg-ink px-4 py-3">
+                  <dt className="text-muted">Página</dt>
+                  <dd className="mt-1 text-base text-paper tabular-nums">
+                    {pagina} / {totalPages || "—"}
+                  </dd>
+                </div>
+                <div className="bg-ink px-4 py-3">
+                  <dt className="text-muted">En pantalla</dt>
+                  <dd className="mt-1 text-base text-acid tabular-nums">
+                    {loading ? "—" : characters.length}
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
-        ) : (
-          <div className="mx-auto mt-10 max-w-7xl grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {characters.map((character) => (
-              <CharacterCard key={character.id} character={character} />
-            ))}
+
+          {/* Herramientas del listado */}
+          <div className="mt-12 grid gap-4 border-y border-line py-5 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-7">
+              <CharacterSearch
+                value={busqueda}
+                onChange={handleChange}
+                onClear={handleClearInput}
+                inputRef={inputRef}
+              />
+            </div>
+
+            <div className="lg:col-span-5 lg:justify-self-end">
+              <Pagination
+                page={pagina}
+                totalPages={totalPages}
+                onChange={setPagina}
+                disabled={loading || characters.length === 0}
+                contexto="personajes"
+              />
+            </div>
           </div>
-        )}
+
+          {loading ? (
+            <PageLoader inline message="CARGANDO PERSONAJES..." />
+          ) : characters.length === 0 ? (
+            <div className="mt-10 border border-line bg-ink-soft/40 p-8 sm:p-12">
+              <p className="font-mono text-label uppercase tracking-[0.28em] text-acid">
+                Sin resultados
+              </p>
+
+              <p className="mt-3 font-display text-2xl uppercase leading-tight text-paper">
+                No se encontraron personajes
+                {busqueda.trim() && (
+                  <>
+                    {" "}
+                    para{" "}
+                    <span className="text-acid">«{busqueda.trim()}»</span>
+                  </>
+                )}
+                .
+              </p>
+
+              <p className="mt-3 text-sm text-muted">
+                Prueba con otro nombre o revisa la ortografía.
+              </p>
+
+              {busqueda && (
+                <button
+                  type="button"
+                  onClick={handleClearInput}
+                  className="mt-6 border border-line px-5 py-2 font-mono text-label uppercase tracking-[0.2em] text-paper transition-colors duration-300 hover:border-acid hover:text-acid focus-visible:ring-2 focus-visible:ring-acid focus-visible:ring-offset-2 focus-visible:ring-offset-ink active:scale-[0.98]"
+                >
+                  Limpiar búsqueda
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {characters.map((character, index) => (
+                <CharacterCard
+                  key={character.id}
+                  character={character}
+                  index={index}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
