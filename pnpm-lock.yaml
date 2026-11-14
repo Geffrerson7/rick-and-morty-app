@@ -33,12 +33,6 @@ importers:
       '@testing-library/user-event':
         specifier: ^14.6.10
         version: 14.6.10(@testing-library/dom@10.4.2)
-      '@types/react':
-        specifier: ^19.2.18
-        version: 19.3.0
-      '@types/react-dom':
-        specifier: ^19.2.7
-        version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
         specifier: ^6.1.1
         version: 6.1.1(vite@8.3.1(@types/node@26.6.6)(jiti@2.7.0))
@@ -2021,10 +2015,12 @@ snapshots:
   '@types/react-dom@19.3.0(@types/react@19.3.0)':
     dependencies:
       '@types/react': 19.3.0
+    optional: true
 
   '@types/react@19.3.0':
     dependencies:
       csstype: 3.2.3
+    optional: true
 
   '@types/set-cookie-parser@2.4.10':
     dependencies:
@@ -2158,7 +2154,8 @@ snapshots:
 
   css.escape@1.5.1: {}
 
-  csstype@3.2.3: {}
+  csstype@3.2.3:
+    optional: true
 
   data-urls@8.0.0:
     dependencies:
