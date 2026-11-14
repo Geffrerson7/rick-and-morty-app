@@ -93,7 +93,7 @@ export default function Personajes() {
 
           {/* Herramientas del listado */}
           <div className="mt-12 grid gap-4 border-y border-line py-5 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-6 xl:col-span-7">
               <CharacterSearch
                 value={busqueda}
                 onChange={handleChange}
@@ -102,7 +102,7 @@ export default function Personajes() {
               />
             </div>
 
-            <div className="lg:col-span-5 lg:justify-self-end">
+            <div className="lg:col-span-6 lg:justify-self-end xl:col-span-5">
               <Pagination
                 page={pagina}
                 totalPages={totalPages}

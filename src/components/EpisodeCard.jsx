@@ -29,7 +29,7 @@ export default function EpisodeCard({ episode }) {
           {/* Métrica 1: Fecha de estreno */}
           <div className="flex flex-col">
             <dt className="text-muted">Transmisión</dt>
-            <dd className="mt-1 truncate text-paper">{episode.air_date}</dd>
+            <dd className="mt-1 text-paper">{episode.air_date}</dd>
           </div>
 
           {/* Métrica 2: Cantidad de personajes (.length) */}
